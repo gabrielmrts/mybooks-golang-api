@@ -14,5 +14,7 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/books", handlers.ListBooks)
 
+	router.POST("/sessions", handlers.SessionStart)
+
 	return router
 }

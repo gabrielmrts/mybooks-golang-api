@@ -25,3 +25,11 @@ func (ur *UserRepository) Create(user *models.User) error {
 	err := ur.db.Create(user).Error
 	return err
 }
+
+func (ur *UserRepository) FindByEmailAndPassword(email string, password string) (models.User, error) {
+	var user = models.User{}
+	if err := ur.db.Where("email = ? AND password = ?", email, password).First(&user).Error; err != nil {
+		return models.User{}, err
+	}
+	return user, nil
+}
