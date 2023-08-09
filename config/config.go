@@ -13,6 +13,7 @@ type Config struct {
 	DATABASE_NAME     string
 	DATABASE_USER     string
 	DATABASE_PASSWORD string
+	ENVIRONMENT       string
 }
 
 func LoadConfig() *Config {
@@ -28,6 +29,7 @@ func LoadConfig() *Config {
 	databaseName := os.Getenv("DATABASE_NAME")
 	databaseUser := os.Getenv("DATABASE_USER")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
+	environment := os.Getenv("ENVIRONMENT")
 
 	config := &Config{
 		DATABASE_HOST:     databaseHost,
@@ -35,6 +37,7 @@ func LoadConfig() *Config {
 		DATABASE_NAME:     databaseName,
 		DATABASE_USER:     databaseUser,
 		DATABASE_PASSWORD: databasePassword,
+		ENVIRONMENT:       environment,
 	}
 
 	return config

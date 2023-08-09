@@ -10,5 +10,9 @@ func SetupRouter() *gin.Engine {
 
 	router.GET("/hello", handlers.HelloHandler)
 
+	router.GET("/users", handlers.ListUsers)
+
+	router.GET("/books", handlers.ListBooks)
+
 	return router
 }

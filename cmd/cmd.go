@@ -12,6 +12,11 @@ func Run() {
 	database.Init()
 	migrations.Migrate()
 
+	conf := config.GetConfig()
+	if conf.ENVIRONMENT == "dev" {
+		migrations.Seed()
+	}
+
 	router := routes.SetupRouter()
 	serverPort := ":8090"
 	router.Run(serverPort)
