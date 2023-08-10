@@ -30,7 +30,6 @@ func CreateUser(c *gin.Context) {
 	var requestBody CreateUserRequestBody
 
 	if err := c.BindJSON(&requestBody); err != nil {
-		log.Fatal(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "missing parameter"})
 		return
 	}
