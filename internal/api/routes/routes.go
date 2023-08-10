@@ -11,6 +11,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/hello", handlers.HelloHandler)
 
 	router.GET("/users", handlers.ListUsers)
+	router.POST("/users", handlers.CreateUser)
 
 	router.GET("/books", handlers.ListBooks)
 
