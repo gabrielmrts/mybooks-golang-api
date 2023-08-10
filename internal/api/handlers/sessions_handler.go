@@ -26,7 +26,7 @@ func SessionStart(c *gin.Context) {
 	user, err := usersRepository().FindByEmailAndPassword(requestBody.Email, passwordHash)
 
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
 		return
 	}
 
