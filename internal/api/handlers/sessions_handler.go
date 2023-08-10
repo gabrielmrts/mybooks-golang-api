@@ -30,7 +30,7 @@ func SessionStart(c *gin.Context) {
 		return
 	}
 
-	token, _ := helpers.GenerateJWT(user.ID)
+	token, _ := helpers.GenerateJWT(user.ID, user.Role)
 
 	c.JSON(http.StatusCreated, gin.H{"bearer": token})
 }

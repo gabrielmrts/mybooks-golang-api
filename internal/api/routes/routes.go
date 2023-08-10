@@ -2,20 +2,25 @@ package routes
 
 import (
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/handlers"
+	"github.com/gabrielmrts/mybooks-golang-api/internal/api/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
-	router.GET("/hello", handlers.HelloHandler)
+	privateGroup := router.Group("/private")
+	privateGroup.Use(middlewares.AuthorizationMiddleware)
+	privateGroup.Use(middlewares.AuthenticationMiddleware)
+	privateGroup.GET("/books", handlers.ListBooks)
 
-	router.GET("/users", handlers.ListUsers)
-	router.POST("/users", handlers.CreateUser)
+	publicGroup := router.Group("/public")
+	publicGroup.GET("/hello", handlers.HelloHandler)
+	publicGroup.POST("/users", handlers.CreateUser)
+	publicGroup.POST("/sessions", handlers.SessionStart)
 
-	router.GET("/books", handlers.ListBooks)
-
-	router.POST("/sessions", handlers.SessionStart)
+	adminGroup := privateGroup.Group("/admin")
+	adminGroup.GET("/users", handlers.ListUsers)
 
 	return router
 }

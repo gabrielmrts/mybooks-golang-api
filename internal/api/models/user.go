@@ -4,8 +4,9 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"not null"`
-	Email    string `gorm:"not null"`
-	Password string `gorm:"not null"`
+	Name     string `json:"name" gorm:"not null"`
+	Email    string `json:"email" gorm:"not null"`
+	Password string `json:"-" gorm:"not null"`
+	Role     string `json:"role" gorm:"default:USER"`
 	Books    []Book `gorm:"ForeignKey:UserId"`
 }
