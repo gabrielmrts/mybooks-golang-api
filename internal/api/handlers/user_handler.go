@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
