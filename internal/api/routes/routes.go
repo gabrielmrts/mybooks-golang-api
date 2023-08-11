@@ -10,8 +10,8 @@ func SetupRouter() *gin.Engine {
 	router := gin.Default()
 
 	privateGroup := router.Group("/private")
-	privateGroup.Use(middlewares.AuthorizationMiddleware)
 	privateGroup.Use(middlewares.AuthenticationMiddleware)
+	privateGroup.Use(middlewares.AuthorizationMiddleware)
 	privateGroup.GET("/books", handlers.ListBooks)
 
 	publicGroup := router.Group("/public")
