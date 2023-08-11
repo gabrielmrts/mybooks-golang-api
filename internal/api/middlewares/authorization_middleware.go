@@ -10,7 +10,7 @@ import (
 
 func AuthorizationMiddleware(c *gin.Context) {
 
-	userRole, _ := c.Get("user_role")
+	userRole, _ := c.Get("userRole")
 
 	if strings.HasPrefix(c.Request.URL.Path, "/private/admin") {
 		if userRole != enums.ROLES.ADMIN {

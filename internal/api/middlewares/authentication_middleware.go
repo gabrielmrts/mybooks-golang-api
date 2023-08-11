@@ -26,7 +26,7 @@ func AuthenticationMiddleware(c *gin.Context) {
 		return
 	}
 
-	c.Set("user_id", claims.Id)
-	c.Set("user_role", claims.Role)
+	c.Set("userId", claims.Id)
+	c.Set("userRole", claims.Role)
 	c.Next()
 }

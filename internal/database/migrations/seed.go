@@ -5,6 +5,7 @@ import (
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/models"
+	"github.com/google/uuid"
 )
 
 func Seed() {
@@ -15,8 +16,8 @@ func Seed() {
 		{Name: "user1", Email: "user1@example.com", Password: "user1password"},
 	}
 	books := []models.Book{
-		{Title: "book1", ISBN: "INSF22", Price: 20, UserId: 1},
-		{Title: "book2", ISBN: "INSF25", Price: 25, UserId: 1},
+		{Title: "book1", ISBN: uuid.NewString(), Price: 20, UserId: 1},
+		{Title: "book2", ISBN: uuid.NewString(), Price: 25, UserId: 1},
 	}
 
 	for _, user := range users {
