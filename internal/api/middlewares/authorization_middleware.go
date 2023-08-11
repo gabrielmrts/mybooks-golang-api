@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -19,7 +18,6 @@ func AuthorizationMiddleware(c *gin.Context) {
 	}
 
 	if strings.HasPrefix(c.Request.URL.Path, "/private/admin") {
-		log.Printf("ROLE: %d", userData.Id)
 		if userData.Role != enums.ROLES.ADMIN {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user not allowed to access this endpoint"})
 		}
