@@ -20,7 +20,7 @@ func Init() {
 			conf.DATABASE_USER, conf.DATABASE_PASSWORD, conf.DATABASE_NAME, conf.DATABASE_PORT, conf.DATABASE_HOST,
 		),
 		PreferSimpleProtocol: true,
-	}), &gorm.Config{})
+	}), &gorm.Config{TranslateError: true})
 
 	if err != nil {
 		log.Fatal("Error while initializing database")

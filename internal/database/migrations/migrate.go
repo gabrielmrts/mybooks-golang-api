@@ -15,4 +15,5 @@ func Migrate() {
 	if err != nil {
 		log.Fatal("Error running migrations")
 	}
+
 }

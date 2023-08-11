@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 	privateGroup.Use(middlewares.AuthenticationMiddleware)
 	privateGroup.Use(middlewares.AuthorizationMiddleware)
 	privateGroup.GET("/books", handlers.ListBooks)
+	privateGroup.POST("/books", handlers.CreateBook)
 
 	publicGroup := router.Group("/public")
 	publicGroup.GET("/hello", handlers.HelloHandler)
