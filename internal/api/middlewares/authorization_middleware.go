@@ -9,16 +9,11 @@ import (
 )
 
 func AuthorizationMiddleware(c *gin.Context) {
-	var userData UserDataContext
 
-	if user, exists := c.Get("user"); exists {
-		if data, ok := user.(UserDataContext); ok {
-			userData = data
-		}
-	}
+	userRole, _ := c.Get("user_role")
 
 	if strings.HasPrefix(c.Request.URL.Path, "/private/admin") {
-		if userData.Role != enums.ROLES.ADMIN {
+		if userRole != enums.ROLES.ADMIN {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "user not allowed to access this endpoint"})
 		}
 	}

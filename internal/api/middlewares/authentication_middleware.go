@@ -7,12 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserDataContext struct {
-	Id   uint
-	Exp  int64
-	Role string
-}
-
 func AuthenticationMiddleware(c *gin.Context) {
 	if c.Request.Method == "OPTIONS" {
 		c.Next()
@@ -25,8 +19,6 @@ func AuthenticationMiddleware(c *gin.Context) {
 		return
 	}
 
-	var userDataContext = UserDataContext{}
-
 	claims, err := helpers.VerifyToken(token)
 
 	if err != nil {
@@ -34,10 +26,7 @@ func AuthenticationMiddleware(c *gin.Context) {
 		return
 	}
 
-	userDataContext.Role = claims.Role
-	userDataContext.Id = claims.Id
-	userDataContext.Exp = claims.Exp
-
-	c.Set("user", userDataContext)
+	c.Set("user_id", claims.Id)
+	c.Set("user_role", claims.Role)
 	c.Next()
 }
