@@ -13,7 +13,22 @@ type SessionRequestBody struct {
 	Password string
 }
 
+// SessionStart
+//
+// @Summary      Start a session
+// @Tags         Sessions
+// @Accept       json
+// @Produce      json
+// @Success      201              {object}   handlers.SessionStart.response
+// @failure      400
+// @failure      401
+// @Param		 body	body	SessionRequestBody	true "request example"
+// @Router		 /public/sessions [post]
 func SessionStart(c *gin.Context) {
+	type response struct {
+		Token string `json:"token"`
+	}
+
 	var requestBody SessionRequestBody
 	usersRepository := factories.GetUsersRepository
 
@@ -32,5 +47,5 @@ func SessionStart(c *gin.Context) {
 
 	token, _ := helpers.GenerateJWT(user.ID, user.Role)
 
-	c.JSON(http.StatusCreated, gin.H{"bearer": token})
+	c.JSON(http.StatusCreated, gin.H{"token": token})
 }

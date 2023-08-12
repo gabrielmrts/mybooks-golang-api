@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	_ "net/http/httputil"
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/models"
@@ -19,12 +20,11 @@ type CreateBookRequestBody struct {
 // ListBooks lists all existing books
 //
 // @Summary      List books
-// @Description  get books
-// @Tags         books
+// @Tags         Books
 // @Produce      json
-// @Success      200              {string}  string    "ok"
-// @failure      400              {string}  string    "error"
-// @response     default          {string}  string    "other error"
+// @Success      200              {array}   models.Book
+// @failure      400
+// @failure      401
 // @Security Bearer
 // @Router		 /private/books [get]
 func ListBooks(c *gin.Context) {
@@ -33,14 +33,29 @@ func ListBooks(c *gin.Context) {
 
 	books, err := booksRepository.List(authorId)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to list books"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Failed to list books"})
 		return
 	}
 
 	c.JSON(http.StatusOK, books)
 }
 
+// CreateBook
+//
+// @Summary      Create a book
+// @Tags         Books
+// @Accept       json
+// @Produce      json
+// @Success      201
+// @failure      400
+// @failure      401
+// @Param		 body	body	models.Book	true "book example"
+// @Security Bearer
+// @Router		 /private/books [post]
 func CreateBook(c *gin.Context) {
+	type response struct {
+	}
+
 	var requestBody CreateBookRequestBody
 	booksRepository := factories.GetBooksRepository()
 	authorId := interface{}(c.MustGet("userId")).(uint)

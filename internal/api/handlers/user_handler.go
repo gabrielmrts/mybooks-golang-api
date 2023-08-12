@@ -17,6 +17,16 @@ type CreateUserRequestBody struct {
 	Password string `binding:"required,min=6,max=255"`
 }
 
+// ListUsers lists all existing users
+//
+// @Summary      List users
+// @Tags         Users
+// @Produce      json
+// @Success      200              {array}   models.User
+// @failure      400
+// @failure      401
+// @Security Bearer
+// @Router		 /private/admin/users [get]
 func ListUsers(c *gin.Context) {
 	usersRepository := factories.GetUsersRepository()
 	users, err := usersRepository.List()
@@ -28,6 +38,17 @@ func ListUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
+// CreateUser
+//
+// @Summary      Create account
+// @Tags         Users
+// @Accept       json
+// @Produce      json
+// @Success      201
+// @failure      400
+// @failure      401
+// @Param		 body	body	CreateUserRequestBody	true "request example"
+// @Router		 /public/users [post]
 func CreateUser(c *gin.Context) {
 	var requestBody CreateUserRequestBody
 
