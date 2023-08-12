@@ -21,6 +21,14 @@ func (ur *UserRepository) List() ([]models.User, error) {
 	return users, nil
 }
 
+func (ur *UserRepository) Get(userId uint) (models.User, error) {
+	var user = models.User{}
+	if err := ur.db.Preload("Account").Where("id = ?", userId).First(&user).Error; err != nil {
+		return models.User{}, err
+	}
+	return user, nil
+}
+
 func (ur *UserRepository) Create(user *models.User) error {
 	err := ur.db.Create(user).Error
 	return err

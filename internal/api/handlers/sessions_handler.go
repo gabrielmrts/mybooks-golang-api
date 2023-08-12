@@ -5,6 +5,7 @@ import (
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/helpers"
+	"github.com/gabrielmrts/mybooks-golang-api/internal/api/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -48,4 +49,34 @@ func SessionStart(c *gin.Context) {
 	token, _ := helpers.GenerateJWT(user.ID, user.Role)
 
 	c.JSON(http.StatusCreated, gin.H{"token": token})
+}
+
+// SessionsMe
+//
+// @Summary      Get current session
+// @Tags         Sessions
+// @Produce      json
+// @Success      200              {array}   handlers.SessionsMe.response
+// @failure      400
+// @failure      401
+// @failure      404
+// @Security Bearer
+// @Router		 /private/sessions/me [get]
+func SessionsMe(c *gin.Context) {
+	type response struct {
+		models.User    `json:"user"`
+		models.Account `json:"account"`
+	}
+
+	usersRepository := factories.GetUsersRepository()
+	userId := interface{}(c.MustGet("userId")).(uint)
+
+	user, err := usersRepository.Get(userId)
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "user not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }

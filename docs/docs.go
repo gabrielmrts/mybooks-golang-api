@@ -90,6 +90,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/private/sessions/me": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sessions"
+                ],
+                "summary": "Get current session",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/handlers.SessionsMe.response"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/public/books": {
             "get": {
                 "produces": [
@@ -238,14 +274,25 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.SessionsMe.response": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/models.Account"
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
+        },
         "models.Account": {
             "type": "object",
             "properties": {
+                "account_id": {
+                    "type": "integer"
+                },
                 "email": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 }
             }
         },
@@ -265,6 +312,29 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.User": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/models.Account"
+                },
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Book"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 }
             }

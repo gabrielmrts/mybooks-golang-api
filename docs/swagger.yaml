@@ -30,12 +30,19 @@ definitions:
       token:
         type: string
     type: object
+  handlers.SessionsMe.response:
+    properties:
+      account:
+        $ref: '#/definitions/models.Account'
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
   models.Account:
     properties:
+      account_id:
+        type: integer
       email:
         type: string
-      id:
-        type: integer
     type: object
   models.Book:
     properties:
@@ -48,6 +55,21 @@ definitions:
       quantity:
         type: integer
       title:
+        type: string
+    type: object
+  models.User:
+    properties:
+      account:
+        $ref: '#/definitions/models.Account'
+      books:
+        items:
+          $ref: '#/definitions/models.Book'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      role:
         type: string
     type: object
 host: localhost:8090
@@ -102,6 +124,28 @@ paths:
       summary: Create a book
       tags:
       - Books
+  /private/sessions/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.SessionsMe.response'
+            type: array
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+      security:
+      - Bearer: []
+      summary: Get current session
+      tags:
+      - Sessions
   /public/books:
     get:
       produces:
