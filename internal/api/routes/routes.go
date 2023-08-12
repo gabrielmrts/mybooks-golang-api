@@ -3,11 +3,16 @@ package routes
 import (
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/handlers"
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/middlewares"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	router.Use(cors.New(corsConfig))
 
 	privateGroup := router.Group("/private")
 	privateGroup.Use(middlewares.AuthenticationMiddleware)
