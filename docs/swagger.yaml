@@ -5,5 +5,33 @@ info:
   description: A book management service API in Go using Gin framework.
   title: Gin Book Service
   version: "1.0"
-paths: {}
+paths:
+  /private/books:
+    get:
+      description: get books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: error
+          schema:
+            type: string
+        default:
+          description: other error
+          schema:
+            type: string
+      security:
+      - Bearer: []
+      summary: List books
+      tags:
+      - books
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

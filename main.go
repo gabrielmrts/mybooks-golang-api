@@ -14,11 +14,15 @@ import (
 
 // @host      localhost:8090
 // @BasePath  /
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 func main() {
+	cmd.Run()
+
 	router := routes.SetupRouter()
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	serverPort := ":8090"
 	router.Run(serverPort)
-	cmd.Run()
 }

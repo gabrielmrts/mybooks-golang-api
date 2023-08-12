@@ -16,6 +16,17 @@ type CreateBookRequestBody struct {
 	Price float64 `json:"price" binding:"required"`
 }
 
+// ListBooks lists all existing books
+//
+// @Summary      List books
+// @Description  get books
+// @Tags         books
+// @Produce      json
+// @Success      200              {string}  string    "ok"
+// @failure      400              {string}  string    "error"
+// @response     default          {string}  string    "other error"
+// @Security Bearer
+// @Router		 /private/books [get]
 func ListBooks(c *gin.Context) {
 	booksRepository := factories.GetBooksRepository()
 	authorId := interface{}(c.MustGet("userId")).(uint)
