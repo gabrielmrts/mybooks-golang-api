@@ -16,11 +16,11 @@ func Seed() {
 
 	// Create Accounts
 	account := models.Account{
-		Name:     "user",
 		Email:    "user@email.com",
 		Password: helpers.GeneratePasswordHash("123456"),
 	}
 	user := models.User{
+		Name: "user",
 		Role: enums.ROLES.USER,
 	}
 	if err := accountsRepository.Create(&account, &user); err != nil {
@@ -28,11 +28,11 @@ func Seed() {
 	}
 
 	accountAdmin := models.Account{
-		Name:     "admin",
 		Email:    "admin@email.com",
 		Password: helpers.GeneratePasswordHash("123456"),
 	}
 	userAdmin := models.User{
+		Name: "admin",
 		Role: enums.ROLES.ADMIN,
 	}
 	if err := accountsRepository.Create(&accountAdmin, &userAdmin); err != nil {

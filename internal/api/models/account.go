@@ -7,7 +7,6 @@ import (
 
 type Account struct {
 	ID        uint         `json:"id" gorm:"primarykey"`
-	Name      string       `json:"name" gorm:"not null"`
 	Email     string       `json:"email" gorm:"not null"`
 	Password  string       `json:"-" gorm:"not null"`
 	UserId    uint         `json:"-"`

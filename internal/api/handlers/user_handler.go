@@ -67,9 +67,10 @@ func CreateUser(c *gin.Context) {
 	usersRepository := factories.GetUsersRepository()
 	accountsRepository := factories.GetAccountsRepository()
 
-	var user = models.User{}
+	var user = models.User{
+		Name: requestBody.Name,
+	}
 	var account = models.Account{
-		Name:     requestBody.Name,
 		Email:    requestBody.Email,
 		Password: helpers.GeneratePasswordHash(requestBody.Password),
 	}
