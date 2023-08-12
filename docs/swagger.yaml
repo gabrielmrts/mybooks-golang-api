@@ -1,0 +1,9 @@
+basePath: /
+host: localhost:8090
+info:
+  contact: {}
+  description: A book management service API in Go using Gin framework.
+  title: Gin Book Service
+  version: "1.0"
+paths: {}
+swagger: "2.0"
