@@ -10,7 +10,7 @@ import (
 func Migrate() {
 	db := database.GetDB()
 
-	err := db.AutoMigrate(&models.User{}, &models.Book{})
+	err := db.AutoMigrate(&models.User{}, &models.Account{}, &models.Book{})
 
 	if err != nil {
 		log.Fatal("Error running migrations")

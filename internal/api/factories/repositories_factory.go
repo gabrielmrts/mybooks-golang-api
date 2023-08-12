@@ -14,3 +14,8 @@ func GetBooksRepository() *repositories.BookRepository {
 	db := database.GetDB()
 	return repositories.NewBookRepository(db)
 }
+
+func GetAccountsRepository() *repositories.AccountRepository {
+	db := database.GetDB()
+	return repositories.NewAccountRepository(db)
+}

@@ -22,7 +22,7 @@ type CreateUserRequestBody struct {
 // @Summary      List users
 // @Tags         Users
 // @Produce      json
-// @Success      200              {array}   models.User
+// @Success      200              {array}   models.Account
 // @failure      400
 // @failure      401
 // @Security Bearer
@@ -64,16 +64,22 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	passwordHash := helpers.GeneratePasswordHash(requestBody.Password)
-	var user = models.User{Name: requestBody.Name, Email: requestBody.Email, Password: passwordHash}
-
 	usersRepository := factories.GetUsersRepository()
+	accountsRepository := factories.GetAccountsRepository()
 
-	if _, err := usersRepository.FindByEmail(user.Email); err == nil {
+	var user = models.User{}
+	var account = models.Account{
+		Name:     requestBody.Name,
+		Email:    requestBody.Email,
+		Password: helpers.GeneratePasswordHash(requestBody.Password),
+	}
+
+	if _, err := usersRepository.FindByEmail(account.Email); err == nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "email already used"})
 		return
 	}
-	if err := usersRepository.Create(&user); err != nil {
+
+	if err := accountsRepository.Create(&account, &user); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "error creating user"})
 		return
 	}

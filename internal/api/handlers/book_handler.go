@@ -72,7 +72,7 @@ func CreateBook(c *gin.Context) {
 		return
 	}
 
-	var book = models.Book{Title: requestBody.Title, Price: requestBody.Price, UserId: int(authorId)}
+	var book = models.Book{Title: requestBody.Title, Price: requestBody.Price, UserId: uint(authorId)}
 	if err := booksRepository.Create(&book); err != nil {
 		if errors.Is(err, gorm.ErrDuplicatedKey) {
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Duplicated ISBN"})
