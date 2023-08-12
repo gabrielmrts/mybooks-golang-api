@@ -13,9 +13,9 @@ func NewBookRepository(db *gorm.DB) *BookRepository {
 	return &BookRepository{db: db}
 }
 
-func (ur *BookRepository) List(userId uint) ([]models.Book, error) {
+func (ur *BookRepository) List() ([]models.Book, error) {
 	var books []models.Book
-	if err := ur.db.Where("user_id = ?", userId).Find(&books).Error; err != nil {
+	if err := ur.db.Find(&books).Error; err != nil {
 		return nil, err
 	}
 	return books, nil

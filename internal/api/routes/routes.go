@@ -12,11 +12,11 @@ func SetupRouter() *gin.Engine {
 	privateGroup := router.Group("/private")
 	privateGroup.Use(middlewares.AuthenticationMiddleware)
 	privateGroup.Use(middlewares.AuthorizationMiddleware)
-	privateGroup.GET("/books", handlers.ListBooks)
 	privateGroup.POST("/books", handlers.CreateBook)
 
 	publicGroup := router.Group("/public")
 	publicGroup.GET("/hello", handlers.HelloHandler)
+	publicGroup.GET("/books", handlers.ListBooks)
 	publicGroup.POST("/users", handlers.CreateUser)
 	publicGroup.POST("/sessions", handlers.SessionStart)
 

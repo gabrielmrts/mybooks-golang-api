@@ -25,13 +25,11 @@ type CreateBookRequestBody struct {
 // @Success      200              {array}   models.Book
 // @failure      400
 // @failure      401
-// @Security Bearer
-// @Router		 /private/books [get]
+// @Router		 /public/books [get]
 func ListBooks(c *gin.Context) {
 	booksRepository := factories.GetBooksRepository()
-	authorId := interface{}(c.MustGet("userId")).(uint)
 
-	books, err := booksRepository.List(authorId)
+	books, err := booksRepository.List()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Failed to list books"})
 		return

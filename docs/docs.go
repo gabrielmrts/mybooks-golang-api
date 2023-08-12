@@ -36,7 +36,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.User"
+                                "$ref": "#/definitions/models.Account"
                             }
                         }
                     },
@@ -50,37 +50,6 @@ const docTemplate = `{
             }
         },
         "/private/books": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Books"
-                ],
-                "summary": "List books",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Book"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            },
             "post": {
                 "security": [
                     {
@@ -111,6 +80,34 @@ const docTemplate = `{
                 "responses": {
                     "201": {
                         "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/public/books": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Books"
+                ],
+                "summary": "List books",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Book"
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -241,6 +238,17 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Account": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Book": {
             "type": "object",
             "properties": {
@@ -253,30 +261,10 @@ const docTemplate = `{
                 "price": {
                     "type": "number"
                 },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.User": {
-            "type": "object",
-            "properties": {
-                "books": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Book"
-                    }
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
+                "quantity": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "role": {
+                "title": {
                     "type": "string"
                 }
             }

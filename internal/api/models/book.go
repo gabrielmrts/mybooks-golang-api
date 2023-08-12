@@ -12,6 +12,7 @@ type Book struct {
 	DeletedAt sql.NullTime `json:"-" gorm:"index"`
 	Title     string       `json:"title" gorm:"not null"`
 	ISBN      string       `json:"isbn" gorm:"unique"`
-	Price     float64      `json:"price"`
+	Price     float64      `json:"price" gorm:"default:0"`
+	Quantity  uint         `json:"quantity" gorm:"default:0"`
 	UserId    uint         `json:"-"`
 }

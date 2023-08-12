@@ -30,6 +30,13 @@ definitions:
       token:
         type: string
     type: object
+  models.Account:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+    type: object
   models.Book:
     properties:
       id:
@@ -38,22 +45,9 @@ definitions:
         type: string
       price:
         type: number
-      title:
-        type: string
-    type: object
-  models.User:
-    properties:
-      books:
-        items:
-          $ref: '#/definitions/models.Book'
-        type: array
-      email:
-        type: string
-      id:
+      quantity:
         type: integer
-      name:
-        type: string
-      role:
+      title:
         type: string
     type: object
 host: localhost:8090
@@ -72,7 +66,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.User'
+              $ref: '#/definitions/models.Account'
             type: array
         "400":
           description: Bad Request
@@ -84,25 +78,6 @@ paths:
       tags:
       - Users
   /private/books:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Book'
-            type: array
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-      security:
-      - Bearer: []
-      summary: List books
-      tags:
-      - Books
     post:
       consumes:
       - application/json
@@ -125,6 +100,24 @@ paths:
       security:
       - Bearer: []
       summary: Create a book
+      tags:
+      - Books
+  /public/books:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: List books
       tags:
       - Books
   /public/sessions:
