@@ -48,5 +48,7 @@ func VerifyEmail(c *gin.Context) {
 
 	account, _ := accountsRepository.FindByEmail(emailVerify.Email)
 	accountsRepository.SetEmailVerified(account, emailVerify.Email)
+
+	emailVerificationRepository.Delete(emailVerify)
 	c.Status(http.StatusNoContent)
 }

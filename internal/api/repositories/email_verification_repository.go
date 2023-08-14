@@ -26,3 +26,7 @@ func (evr *EmailVerificationRepository) GetByCode(code string) (models.EmailVeri
 	}
 	return emailVerification, nil
 }
+
+func (evr *EmailVerificationRepository) Delete(entry models.EmailVerification) {
+	evr.db.Delete(&entry)
+}
