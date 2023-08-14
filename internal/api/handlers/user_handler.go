@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
@@ -9,12 +11,13 @@ import (
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/google/uuid"
 )
 
 type CreateUserRequestBody struct {
-	Name     string `binding:"required,alphanum,min=4,max=255"`
-	Email    string `binding:"required,email,min=3"`
-	Password string `binding:"required,min=6,max=255"`
+	Name     string `json:"name" binding:"required,min=4,max=255"`
+	Email    string `json:"email" binding:"required,email,min=3"`
+	Password string `json:"password" binding:"required,min=6,max=255"`
 }
 
 // ListUsers lists all existing users
@@ -66,6 +69,7 @@ func CreateUser(c *gin.Context) {
 
 	usersRepository := factories.GetUsersRepository()
 	accountsRepository := factories.GetAccountsRepository()
+	emailVerificationRepository := factories.GetEmailVerificationRepository()
 
 	var user = models.User{
 		Name: requestBody.Name,
@@ -85,5 +89,23 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	var emailVerification = models.EmailVerification{
+		Email: account.Email,
+		Code:  uuid.NewString(),
+	}
+	emailVerificationRepository.Create(&emailVerification)
+
+	mailService := factories.GetMailService()
+	mailVariables := struct {
+		Link string
+		Name string
+	}{
+		Link: fmt.Sprintf("http://localhost:3000/verify?code=%s", emailVerification.Code),
+		Name: user.Name,
+	}
+
+	if err := mailService.SendMail("Confirme seu email", account.Email, "email_confirmation", mailVariables); err != nil {
+		log.Println("Error while sending email: ", err)
+	}
 	c.AbortWithStatusJSON(http.StatusCreated, gin.H{"message": "user created with success"})
 }

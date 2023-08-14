@@ -48,3 +48,27 @@ func (ar *AccountRepository) Create(account *models.Account, user *models.User) 
 
 	return err
 }
+
+func (ar *AccountRepository) FindByUserID(userId uint) (models.Account, error) {
+	var account = models.Account{}
+
+	if err := ar.db.Where(models.Account{UserId: userId}).First(&account).Error; err != nil {
+		return models.Account{}, err
+	}
+	return account, nil
+}
+
+func (ar *AccountRepository) SetEmailVerified(account models.Account, email string) error {
+	if err := ar.db.Model(&account).Update("EmailVerified", true).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (ar *AccountRepository) FindByEmail(email string) (models.Account, error) {
+	var account = models.Account{}
+	if err := ar.db.Where("email = ?", email).First(&account).Error; err != nil {
+		return models.Account{}, err
+	}
+	return account, nil
+}

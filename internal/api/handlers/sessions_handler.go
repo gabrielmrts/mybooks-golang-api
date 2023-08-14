@@ -32,9 +32,10 @@ func SessionStart(c *gin.Context) {
 
 	var requestBody SessionRequestBody
 	usersRepository := factories.GetUsersRepository()
+	accountsRepository := factories.GetAccountsRepository()
 
 	if err := c.BindJSON(&requestBody); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "missing email or password param"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing email or password param"})
 		return
 	}
 
@@ -42,12 +43,17 @@ func SessionStart(c *gin.Context) {
 	user, err := usersRepository.FindByEmailAndPassword(requestBody.Email, passwordHash)
 
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		return
+	}
+
+	account, _ := accountsRepository.FindByUserID(user.ID)
+	if account.EmailVerified == false {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "email unconfirmed"})
 		return
 	}
 
 	token, _ := helpers.GenerateJWT(user.ID, user.Role)
-
 	c.JSON(http.StatusCreated, gin.H{"token": token})
 }
 

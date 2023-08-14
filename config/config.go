@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -14,6 +15,8 @@ type Config struct {
 	DATABASE_USER     string
 	DATABASE_PASSWORD string
 	ENVIRONMENT       string
+	SMTP_HOST         string
+	SMTP_PORT         int
 }
 
 func LoadConfig() *Config {
@@ -30,6 +33,10 @@ func LoadConfig() *Config {
 	databaseUser := os.Getenv("DATABASE_USER")
 	databasePassword := os.Getenv("DATABASE_PASSWORD")
 	environment := os.Getenv("ENVIRONMENT")
+	smtpHost := os.Getenv("SMTP_HOST")
+	smtpPort := os.Getenv("SMTP_PORT")
+
+	smtpPortInt, _ := strconv.Atoi(smtpPort)
 
 	config := &Config{
 		DATABASE_HOST:     databaseHost,
@@ -38,6 +45,8 @@ func LoadConfig() *Config {
 		DATABASE_USER:     databaseUser,
 		DATABASE_PASSWORD: databasePassword,
 		ENVIRONMENT:       environment,
+		SMTP_HOST:         smtpHost,
+		SMTP_PORT:         smtpPortInt,
 	}
 
 	return config

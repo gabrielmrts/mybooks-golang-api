@@ -10,6 +10,11 @@ func GetUsersRepository() *repositories.UserRepository {
 	return repositories.NewUserRepository(db)
 }
 
+func GetEmailVerificationRepository() *repositories.EmailVerificationRepository {
+	db := database.GetDB()
+	return repositories.NewEmailVerificationRepository(db)
+}
+
 func GetBooksRepository() *repositories.BookRepository {
 	db := database.GetDB()
 	return repositories.NewBookRepository(db)

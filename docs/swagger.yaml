@@ -57,6 +57,11 @@ definitions:
       title:
         type: string
     type: object
+  models.EmailVerification:
+    properties:
+      code:
+        type: string
+    type: object
   models.User:
     properties:
       account:
@@ -210,6 +215,27 @@ paths:
         "401":
           description: Unauthorized
       summary: Create account
+      tags:
+      - Users
+  /public/users/email:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: body example
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.EmailVerification'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Verify a user email
       tags:
       - Users
 securityDefinitions:

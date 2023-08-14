@@ -228,6 +228,39 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/public/users/email": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Verify a user email",
+                "parameters": [
+                    {
+                        "description": "body example",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.EmailVerification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -312,6 +345,14 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.EmailVerification": {
+            "type": "object",
+            "properties": {
+                "code": {
                     "type": "string"
                 }
             }

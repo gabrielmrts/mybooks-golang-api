@@ -11,7 +11,7 @@ func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE, PATCH")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
@@ -35,6 +35,7 @@ func SetupRouter() *gin.Engine {
 	publicGroup.GET("/hello", handlers.HelloHandler)
 	publicGroup.GET("/books", handlers.ListBooks)
 	publicGroup.POST("/users", handlers.CreateUser)
+	publicGroup.PATCH("/users/email", handlers.VerifyEmail)
 	publicGroup.POST("/sessions", handlers.SessionStart)
 
 	adminGroup := privateGroup.Group("/admin")
