@@ -22,7 +22,7 @@ type VerifyEmailRequestBody struct {
 // @failure      400
 // @failure      401
 // @Param		 body	body	models.EmailVerification	true "body example"
-// @Router		 /public/users/email [patch]
+// @Router		 /public/users/email [post]
 func VerifyEmail(c *gin.Context) {
 	var requestBody VerifyEmailRequestBody
 	emailVerificationRepository := factories.GetEmailVerificationRepository()

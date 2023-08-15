@@ -72,3 +72,10 @@ func (ar *AccountRepository) FindByEmail(email string) (models.Account, error) {
 	}
 	return account, nil
 }
+
+func (ar *AccountRepository) SetPassword(account models.Account, password string) error {
+	if err := ar.db.Model(&account).Update("Password", password).Error; err != nil {
+		return err
+	}
+	return nil
+}

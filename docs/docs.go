@@ -230,7 +230,7 @@ const docTemplate = `{
             }
         },
         "/public/users/email": {
-            "patch": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -252,6 +252,72 @@ const docTemplate = `{
                 "responses": {
                     "204": {
                         "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/public/users/password": {
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Reset user password",
+                "parameters": [
+                    {
+                        "description": "body example",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ResetPassword.request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/public/users/password/recover": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Send password recover link to user email",
+                "parameters": [
+                    {
+                        "description": "body example",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.PasswordRecoverLinkEmailHandler.request"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
                     },
                     "400": {
                         "description": "Bad Request"
@@ -285,6 +351,34 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 255,
                     "minLength": 6
+                }
+            }
+        },
+        "handlers.PasswordRecoverLinkEmailHandler.request": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "minLength": 3
+                }
+            }
+        },
+        "handlers.ResetPassword.request": {
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 6
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },

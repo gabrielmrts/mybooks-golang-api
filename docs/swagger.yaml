@@ -18,6 +18,25 @@ definitions:
     - name
     - password
     type: object
+  handlers.PasswordRecoverLinkEmailHandler.request:
+    properties:
+      email:
+        minLength: 3
+        type: string
+    required:
+    - email
+    type: object
+  handlers.ResetPassword.request:
+    properties:
+      password:
+        maxLength: 255
+        minLength: 6
+        type: string
+      token:
+        type: string
+    required:
+    - password
+    type: object
   handlers.SessionRequestBody:
     properties:
       email:
@@ -218,7 +237,7 @@ paths:
       tags:
       - Users
   /public/users/email:
-    patch:
+    post:
       consumes:
       - application/json
       parameters:
@@ -236,6 +255,48 @@ paths:
         "401":
           description: Unauthorized
       summary: Verify a user email
+      tags:
+      - Users
+  /public/users/password:
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: body example
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ResetPassword.request'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Reset user password
+      tags:
+      - Users
+  /public/users/password/recover:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: body example
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.PasswordRecoverLinkEmailHandler.request'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      summary: Send password recover link to user email
       tags:
       - Users
 securityDefinitions:

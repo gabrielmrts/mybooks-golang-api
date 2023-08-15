@@ -35,8 +35,10 @@ func SetupRouter() *gin.Engine {
 	publicGroup.GET("/hello", handlers.HelloHandler)
 	publicGroup.GET("/books", handlers.ListBooks)
 	publicGroup.POST("/users", handlers.CreateUser)
-	publicGroup.PATCH("/users/email", handlers.VerifyEmail)
+	publicGroup.POST("/users/email", handlers.VerifyEmail)
 	publicGroup.POST("/sessions", handlers.SessionStart)
+	publicGroup.POST("/users/password/recover", handlers.PasswordRecoverLinkEmailHandler)
+	publicGroup.PATCH("/users/password", handlers.ResetPassword)
 
 	adminGroup := privateGroup.Group("/admin")
 	adminGroup.GET("/users", handlers.ListUsers)

@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"fmt"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/factories"
 	"github.com/gabrielmrts/mybooks-golang-api/internal/api/helpers"
@@ -33,6 +36,8 @@ func SessionStart(c *gin.Context) {
 	var requestBody SessionRequestBody
 	usersRepository := factories.GetUsersRepository()
 	accountsRepository := factories.GetAccountsRepository()
+	emailVerificationRepository := factories.GetEmailVerificationRepository()
+	mailService := factories.GetMailService()
 
 	if err := c.BindJSON(&requestBody); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "missing email or password param"})
@@ -48,12 +53,30 @@ func SessionStart(c *gin.Context) {
 	}
 
 	account, _ := accountsRepository.FindByUserID(user.ID)
+	emailVerification, err := emailVerificationRepository.GetByEmail(account.Email)
+
+	if err == nil {
+		mailVariables := struct {
+			Link string
+			Name string
+		}{
+			Link: fmt.Sprintf("http://localhost:3000/verify?code=%s", emailVerification.Code),
+			Name: user.Name,
+		}
+
+		if err := mailService.SendMail("Confirme seu email", account.Email, "email_confirmation", mailVariables); err != nil {
+			log.Println("Error while sending email: ", err)
+		}
+	}
+
 	if account.EmailVerified == false {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "email unconfirmed"})
 		return
 	}
 
-	token, _ := helpers.GenerateJWT(user.ID, user.Role)
+	expTime := time.Now().Add(time.Hour * 1)
+	token, _ := helpers.GenerateJWT(user.ID, user.Role, expTime)
+
 	c.JSON(http.StatusCreated, gin.H{"token": token})
 }
 
